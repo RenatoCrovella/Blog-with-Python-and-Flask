@@ -105,7 +105,8 @@ class User(UserMixin, db.Model):
 def get_all_posts():
     result = db.session.execute(db.select(BlogPost))
     posts = result.scalars().all()
-    return render_template("index.html", all_posts=posts, current_user=current_user)
+    year = date.today().year
+    return render_template("index.html", all_posts=posts, current_user=current_user, year=year)
 
 
 @app.route('/login', methods=["GET", "POST"])
