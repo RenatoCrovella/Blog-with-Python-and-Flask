@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship
 
 # Import your forms from the forms.py
-from forms import CreatePostForm, LoginForm
+from forms import CreatePostForm, LoginForm, RegisterForm
 
 # Loads environment variables
 dotenv.load_dotenv()
@@ -81,6 +81,32 @@ class User(UserMixin, db.Model):
 
 with app.app_context():
     db.create_all()
+
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        result = db.session.execute(db.select(User).where(User.email == form.email.data))
+        user = result.scalar()
+        if user:
+            flash("You're already registered. Please login instead.")
+            return redirect(url_for("login"))
+
+        generated_password = werkzeug.security.generate_password_hash(
+            password=form.password.data,
+            method='pbkdf2',
+            salt_length=8
+        )
+        new_user = User(
+            name=form.name.data,
+            email=form.email.data,
+            password=generated_password
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for("get_all_posts"))
+    return render_template("register.html", form=form, current_user=current_user)
 
 
 @app.route('/')
