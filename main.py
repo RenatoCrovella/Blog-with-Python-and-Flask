@@ -75,10 +75,6 @@ class User(UserMixin, db.Model):
     # comments = relationship("Comment", back_populates="comment_author")
 
 
-with app.app_context():
-    db.create_all()
-
-
 @app.route('/register', methods=["GET", "POST"])
 def register():
     form = RegisterForm()
