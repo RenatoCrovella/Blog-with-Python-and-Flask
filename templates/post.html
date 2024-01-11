@@ -36,32 +36,6 @@
           >
         </div>
         {% endif %}
-
-        <!-- Comments Area -->
-        {{ ckeditor.load() }}
-        {{ ckeditor.config(name='comment_text') }}
-        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
-
-        <div class="comment">
-          <ul class="commentList">
-            {% for comment in post.comments: %}
-            <li>
-              <div class="commenterImage">
-                <img src="{{ comment.comment_author.email | gravatar }}" />
-              </div>
-              <div class="commentText">
-                <p>{{ comment.text|safe }}</p>
-                <span class="date sub-text">{{ comment.comment_author.name }}</span>
-                <span>
-                  {% if comment.comment_author.email==current_user.email: %}
-                    <a href="{{url_for('delete_comment', comment_id=comment.id, post_id=post.id) }}">✘</a>
-                  {% endif %}
-                </span>
-              </div>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
       </div>
     </div>
   </div>

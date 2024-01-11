@@ -10863,3 +10863,7 @@ header.masthead .post-heading .meta a {
   color: #ee6f57;
   text-align: center;
 }
+
+article p img{
+  max-width: -webkit-fill-available;
+}
