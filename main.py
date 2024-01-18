@@ -49,6 +49,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 db = SQLAlchemy()
 db.init_app(app)
 
+with app.app_context():
+    db.create_all() 
 
 # CONFIGURE TABLES
 class BlogPost(db.Model):
